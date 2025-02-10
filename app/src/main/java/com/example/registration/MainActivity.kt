@@ -19,11 +19,10 @@ import com.example.registration.ui.theme.RegistrationTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         val authViewModel :AuthViewModel by viewModels()
         setContent {
             val navController = rememberNavController()
-                NavGraph(navController , authViewModel = authViewModel)
+                NavGraph(navController , authViewModel)
         }
     }
 }

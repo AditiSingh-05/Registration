@@ -45,6 +45,20 @@ fun SignupPage(navController: NavController, authViewModel: AuthViewModel){
     val authState = authViewModel.authState.observeAsState()
     var email by remember{ mutableStateOf("") }
     var password by remember{ mutableStateOf("")}
+    val context = LocalContext.current
+
+    LaunchedEffect(authState.value) {
+        when (authState.value) {
+            is AuthState.Authenticated -> navController.navigate(AppScreens.HomePage.route)
+            is AuthState.Error -> Toast.makeText(
+                context,
+                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT
+            ).show()
+
+            else -> Unit
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

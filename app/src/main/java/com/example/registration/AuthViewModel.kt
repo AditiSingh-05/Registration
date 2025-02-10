@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class AuthViewModel: ViewModel() {
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
-    private val _authState = MutableLiveData<AuthState>()
+    private val _authState = MutableLiveData<AuthState>(AuthState.Unauthenticated)
     val authState : LiveData<AuthState> = _authState
 
     fun checkAuthStatus(){
@@ -22,6 +22,8 @@ class AuthViewModel: ViewModel() {
             _authState.value = AuthState.Error("Please fill all fields")
             return
         }
+        _authState.value = AuthState.Loading
+
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener{task->
                 if(task.isSuccessful){
@@ -38,6 +40,9 @@ class AuthViewModel: ViewModel() {
             _authState.value = AuthState.Error("Please fill all fields")
             return
         }
+
+        _authState.value = AuthState.Loading
+
         auth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener{task->
                 if(task.isSuccessful){
